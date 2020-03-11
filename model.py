@@ -16,13 +16,14 @@ class BirdType(db.Model):
     
     __tablename__ = "birdtypes"
 
-    ebird_id = db.Column(db.String(6), nullable=False, primary_key=True)
+    ebird_id = db.Column(db.String(64), nullable=False, primary_key=True)
     genus = db.Column(db.String(64), nullable=False)
     species = db.Column(db.String(64), nullable=False)
     common_name = db.Column(db.String(64), nullable=False)
-    range_textfield =  db.Column(db.String(6000), nullable=True)
+    range_notes =  db.Column(db.Text, nullable=True)
 
-   
+    birdsightings = db.relationship("BirdSighting")
+
     def __repr__(self):
         """provide helpful representation when printed""" 
         return f"<BirdType Object: ebird_id is {self.ebird_id}.>" 
@@ -33,20 +34,20 @@ class BirdType(db.Model):
 # 'sciName': 'Archilochus colubris',
 
 
-class Clade(db.Model):
-    """Table of genuses and their clade membership. Hummingbirds fall into nine main clades, the 
-    Topazes, Hermits, Mangoes, Brilliants, Coquettes, Patagona, Mountain Gems, Bees, and Emeralds, 
-    defining their relationship to nectar-bearing flowering plants 
-    and the birds' continued spread into new geographic areas"""
+# class Clade(db.Model):
+#     """Table of genuses and their clade membership. Hummingbirds fall into nine main clades, the 
+#     Topazes, Hermits, Mangoes, Brilliants, Coquettes, Patagona, Mountain Gems, Bees, and Emeralds, 
+#     defining their relationship to nectar-bearing flowering plants 
+#     and the birds' continued spread into new geographic areas"""
     
-    __tablename__ = "clades"
+#     __tablename__ = "clades"
 
-    genus = db.Column(db.String(64), nullable=False, primary_key=True)
-    clade = db.Column(db.String(64), nullable=False)
+#     genus = db.Column(db.String(64), nullable=False, primary_key=True)
+#     clade = db.Column(db.String(64), nullable=False)
 
-    def __repr__(self):
-        """provide helpful representation when printed""" 
-        return f"<Clade Object: genus is {self.genus}, clade is {self.clade}.>" 
+    # def __repr__(self):
+        # """provide helpful representation when printed""" 
+        # return f"<Clade Object: genus is {self.genus}, clade is {self.clade}.>" 
 
 
 class BirdSighting(db.Model):
@@ -55,9 +56,12 @@ class BirdSighting(db.Model):
     __tablename__ = "birdsightings"
 
     bird_sighting_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
-    ebird_id = db.Column(db.String(6), nullable=False)
-    checklist_id = db.Column(db.String(64), nullable=False)
+    ebird_id = db.Column(db.String(64), db.ForeignKey('birdtypes.ebird_id'), nullable=False)
+    checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
     number_of_birds = db.Column(db.Integer, nullable=False)
+
+    birdtype = db.relationship("BirdType")
+    checklist = db.relationship("Checklist")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
@@ -74,6 +78,8 @@ class Checklist(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 
+    birdsightings = db.relationship("BirdSighting")
+    
     def __repr__(self):
         """provide helpful representation when printed""" 
         return f"<Checklist Object: checklist_id is {self.checklist_id}.>"  
