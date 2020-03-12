@@ -1,9 +1,13 @@
 
 from flask_sqlalchemy import SQLAlchemy
 
+
+
+# Importing and instantiating a SQLAlchemy object. 
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
+# object, where we do most of our interactions (like committing, etc.), and the
+# db.Model super-class that our database table classes will inherit from.
 
 db = SQLAlchemy()
 
@@ -58,10 +62,12 @@ class BirdSighting(db.Model):
     bird_sighting_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
     ebird_id = db.Column(db.String(64), db.ForeignKey('birdtypes.ebird_id'), nullable=False)
     checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
+    location_id = db.Column(db.String(64), db.ForeignKey('locations.location_id'), nullable=False)
     number_of_birds = db.Column(db.Integer, nullable=False)
 
     birdtype = db.relationship("BirdType")
     checklist = db.relationship("Checklist")
+    location = db.relationship("Location")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
@@ -75,17 +81,55 @@ class Checklist(db.Model):
 
     checklist_id = db.Column(db.String(64), nullable=False, primary_key=True)
     datetime_object = db.Column(db.DateTime, nullable=False)
+    
+    birdsightings = db.relationship("BirdSighting")
+
+    def __repr__(self):
+        """provide helpful representation when printed""" 
+        return f"<Checklist Object: checklist_id is {self.checklist_id}.>"  
+
+
+class Location(db.Model):
+    """Birding location."""
+    
+    __tablename__ = "locations"
+
+    location_id = db.Column(db.String(64), nullable=False, primary_key=True)
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 
     birdsightings = db.relationship("BirdSighting")
-    
+
     def __repr__(self):
         """provide helpful representation when printed""" 
-        return f"<Checklist Object: checklist_id is {self.checklist_id}.>"  
+        return f"<Location Object: location_id is {self.location_id}.>" 
+
 
 
 # 'subId': 'S65407994'
 # 'obsDt': '2020-03-03 17:07'
 # 'lat': 33.8334575, 
 # 'lng': -84.2980854,
+
+
+##############################################################################
+# Helper functions
+
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our database.
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///hummingbirds"
+    app.config["SQLALCHEMY_ECHO"] = True
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    db.app = app
+    db.init_app(app)
+
+
+if __name__ == "__main__":
+    # If you run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+    connect_to_db(app)
+    print("Connected to declarative base!")
