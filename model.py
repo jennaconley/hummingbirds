@@ -24,8 +24,8 @@ class BirdType(db.Model):
     common_name = db.Column(db.String(64), nullable=False)
     range_notes =  db.Column(db.Text, nullable=True)
 
-    birdsightings = db.relationship("BirdSighting")
-    taxon = db.relationship("Taxon")
+    # birdsightings = db.relationship("BirdSighting")
+    # taxon = db.relationship("Taxon")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
@@ -65,8 +65,8 @@ class BirdSighting(db.Model):
     checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
     number_of_birds = db.Column(db.Integer, nullable=False)
 
-    birdtype = db.relationship("BirdType")
-    checklist = db.relationship("Checklist")
+    # birdtype = db.relationship("BirdType")
+    # checklist = db.relationship("Checklist")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
@@ -82,8 +82,8 @@ class Checklist(db.Model):
     datetime_object = db.Column(db.DateTime, nullable=False)
     location_id = db.Column(db.String(64), db.ForeignKey('locations.location_id'), nullable=False)
 
-    birdsightings = db.relationship("BirdSighting")
-    location = db.relationship("Location")
+    # birdsightings = db.relationship("BirdSighting")
+    # location = db.relationship("Location")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
@@ -100,7 +100,7 @@ class Location(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     country = db.Column(db.String(64), nullable=True)
 
-    checklists = db.relationship("Checklist")
+    # checklists = db.relationship("Checklist")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
