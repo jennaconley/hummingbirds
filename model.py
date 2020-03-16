@@ -24,7 +24,7 @@ class BirdType(db.Model):
     common_name = db.Column(db.String(64), nullable=False)
     range_notes =  db.Column(db.Text, nullable=True)
 
-    # birdsightings = db.relationship("BirdSighting")
+    birdsightings = db.relationship("BirdSighting")
     # taxon = db.relationship("Taxon")
 
     def __repr__(self):
@@ -62,10 +62,13 @@ class BirdSighting(db.Model):
 
     bird_sighting_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
     ebird_id = db.Column(db.String(64), db.ForeignKey('birdtypes.ebird_id'), nullable=False)
-    checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
+
+    checklist_id = db.Column(db.String(64), nullable=False)
+    # checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
+
     number_of_birds = db.Column(db.Integer, nullable=False)
 
-    # birdtype = db.relationship("BirdType")
+    birdtype = db.relationship("BirdType")
     # checklist = db.relationship("Checklist")
 
     def __repr__(self):
