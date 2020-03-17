@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+	<!-- Sighting information goes below-->
+        <p><h3>Hummingbird Sightings</h3></p>
+         <br>
+            {% for sighting in sightings_list %}
+
+                  <div id="sighting-div" class="row">
+
+	<h3>"{{ sighting.ebird_id }}: checklist {{ sighting.checklist_id }} reports {{ sighting.number_of_birds }} birds."                   
+
+                  </div>
+
+            {% endfor %}
+
+
+    </div>
+{% endblock %}

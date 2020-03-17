@@ -63,6 +63,21 @@ def load_birdsightings():
     # Open file and return a corresponding file object. 
     # Split on tab with \t
     # Extract data from the file object's row attributes.
+    for row in open("seed_data/ebd_calhum.txt"):
+        row_list = row.split("\t")
+        if row_list[8].isdigit(): 
+            quantity = row_list[8]
+        else:
+            continue
+        checklist = row_list[30]
+        # Create new row object:
+        birdsighting = BirdSighting(ebird_id="calhum", checklist_id=checklist, number_of_birds=quantity)
+        # Add new row object to the session so it will be stored:
+        db.session.add(birdsighting)
+
+    # Open file and return a corresponding file object. 
+    # Split on tab with \t
+    # Extract data from the file object's row attributes.
     for row in open("seed_data/ebd_allhum.txt"):
         row_list = row.split("\t")
         if row_list[8].isdigit(): 
@@ -125,7 +140,7 @@ if __name__ == "__main__":
     db.create_all()
 
     # Load data into row objects created from classes in model.py
-    load_birdtypes()
+    # load_birdtypes()
     # load_taxa()
     load_birdsightings()
     # load_checklists()

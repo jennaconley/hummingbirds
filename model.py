@@ -73,7 +73,7 @@ class BirdSighting(db.Model):
 
     def __repr__(self):
         """provide helpful representation when printed""" 
-        return f"<BirdSighting Object: ebird_id is {self.ebird_id}, number_of_birds is {self.number_of_birds}.>"  
+        return f"<BirdSighting Object: {self.number_of_birds} {self.ebird_id} on checklist {self.checklist_id}.>"  
 
 
 class Checklist(db.Model):

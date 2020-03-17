@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <div>
+
+    <!-- List of hummingbird links-->
+    <p><h3>View Hummingbird Sightings</h3></p>
+         <br>
+
+            {% for hum in humlist %}
+                  <div class="hum-div">
+	      <a href="/sightings/{{ hum.ebird_id }}">{{ hum.common_name }}</a>
+                  </div>
+            {% endfor %}
+
+    </div>
+{% endblock %}
