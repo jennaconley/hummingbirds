@@ -125,19 +125,16 @@ def load_locations():
 
     for row in open("seed_data/all_hummingbird_sightings.txt"):
         row_list = row.split("\t")
-
             if int(row_list[27][0:4]) > 2016:
-            location = row_list[23]
-
-
-
-
-
-    Location(location_id=location, 
-        latitude = "", longitude = "", country = "")
-
-    # Add new row object to the session so it will be stored:
-        db.session.add(birdsighting)
+                if row_list[3] == species:
+                    location = row_list[23]
+                    latitude =  row_list[25]
+                    longitude = row_list[26]
+                    country = row_list[12]            
+                    Location(location_id=location, 
+                        latitude = "", longitude = "", country = "")
+                    # Add new row object to the session so it will be stored:
+                    db.session.add(birdsighting)
 
     # Commit all the new work:
     db.session.commit()
