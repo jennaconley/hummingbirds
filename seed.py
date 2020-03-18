@@ -96,23 +96,51 @@ def load_birdsightings():
 
 
 def load_checklists():
-    checklist_id = ""
-    datetime_object = ""
-    location_id = ""
+    
+    for row in open("seed_data/all_hummingbird_sightings.txt"):
+        row_list = row.split("\t")
 
-    Checklist()
+            if int(row_list[27][0:4]) > 2016:
+            location = row_list[23]
+            checklist = row_list[30]
+
+            date = row_list[27]
+            time = row_list[28]
+
+
+    Checklist(checklist_id=checklist, location_id=location, 
+        datetime_object = "")
+
+
+    # Add new row object to the session so it will be stored:
+        db.session.add(birdsighting)
+
+    # Commit all the new work:
+    db.session.commit()
 
 
 
 def load_locations():
-    location_id = ""
-    latitude = ""
-    longitude = ""
-    country = ""
-
-    Location()
 
 
+    for row in open("seed_data/all_hummingbird_sightings.txt"):
+        row_list = row.split("\t")
+
+            if int(row_list[27][0:4]) > 2016:
+            location = row_list[23]
+
+
+
+
+
+    Location(location_id=location, 
+        latitude = "", longitude = "", country = "")
+
+    # Add new row object to the session so it will be stored:
+        db.session.add(birdsighting)
+
+    # Commit all the new work:
+    db.session.commit()
 
 
 # 'TAXONOMIC ORDER', 2            
