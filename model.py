@@ -62,14 +62,12 @@ class BirdSighting(db.Model):
 
     bird_sighting_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
     ebird_id = db.Column(db.String(64), db.ForeignKey('birdtypes.ebird_id'), nullable=False)
-
-    checklist_id = db.Column(db.String(64), nullable=False)
-    # checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
-
+    # checklist_id = db.Column(db.String(64), nullable=False)
+    checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
     number_of_birds = db.Column(db.Integer, nullable=False)
 
     birdtype = db.relationship("BirdType")
-    # checklist = db.relationship("Checklist")
+    checklist = db.relationship("Checklist")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
