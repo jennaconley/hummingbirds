@@ -127,7 +127,7 @@ def load_checklists():
     """Load row objects into database."""
     unique_checklists = []
     # for i, row in enumerate(open("seed_data/all_hummingbird_sightings_since_2017.txt")):
-    for row in open("seed_data/first100sightings.txt"):
+    for i, row in enumerate(open("seed_data/first100sightings.txt")):
         row = row.rstrip()
         row_list = row.split("\t")
         # if len(row_list) < 43:
@@ -146,13 +146,16 @@ def load_checklists():
 
                 date = row_list[27]
                 time = row_list[28]
-                datetime_object = date + time
+                if len(time) < 5:
+                    time = "00:00:00"
+                datetime_string = date + " " + time
+                datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S")
 
                 
-                print("checklist_id= ", checklist, "location_id= ", location, "datetime_object= ", datetime)
-                sys.exit()
+                # print("checklist_id= ", checklist, "location_id= ", location, "datetime_object= ", datetime_object.timetuple())
+                # sys.exit()
                 # break
-                checklist_object = Checklist(location_id=location, checklist_id=checklist, datetime_object=datetime)
+                checklist_object = Checklist(location_id=location, checklist_id=checklist, datetime_object=datetime_object)
 
                 # Add new row object to the session so it will be stored:
                 db.session.add(checklist_object)
@@ -164,8 +167,11 @@ def load_checklists():
                     print("Unique Checklists: ", len(unique_checklists))
                     # Commit all the new work: 
                     db.session.commit()
-    
-    sys.exit()                
+            # else:
+            #     print()
+            #     print("Not Species: ", row_list[3])
+            #     print()
+    # sys.exit()                
     # Commit all the new work:
     db.session.commit()
 
