@@ -57,9 +57,8 @@ def show_sightings(ebird_id):
     for sighting_object in sightings:
         checklist_object = sighting_object.checklist
         location_object = checklist_object.location
-        loc_birdcount_dict[location_object.location_id] = (loc_birdcount_dict.get(location_object.location_id, 0) 
-                                                                + sighting_object.number_of_birds)
-
+        loc_birdcount_dict[location_object.location_id] = loc_birdcount_dict.get(location_object.location_id, 0) + sighting_object.number_of_birds
+   
 
 
     return render_template("hummingbird.html", locationbird_dict=loc_birdcount_dict, bird_object=bird)
