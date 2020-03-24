@@ -6,13 +6,14 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from jinja2 import StrictUndefined
 
-from model import connect_to_db, db, BirdType, Taxon, BirdSighting, Checklist, Location
+from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
+# from model import Taxon
 
 
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar:
-app.secret_key = "ABC"
+app.secret_key = "hummingbird"
 
 # This will cause Jinja to automatically reload templates if they've been
 # changed. This is a resource-intensive operation so it should only be
@@ -43,14 +44,28 @@ def begin_search():
 def show_sightings(ebird_id):
     """Render the template hummingbird.html"""
 
-    #bird = BirdType.query.get(ebird_id)
+    bird = BirdType.query.get(ebird_id)
 
     sightings = BirdSighting.query.filter_by(ebird_id=ebird_id).all()
 
 
-    return render_template("hummingbird.html", sightings_list=sightings)
+    # locations = Location.query.all()
 
 
+    loc_birdcount_dict = {}
+
+    for sighting_object in sightings:
+        checklist_object = sighting_object.checklist
+        location_object = checklist_object.location
+        loc_birdcount_dict[location_object.location_id] = (loc_birdcount_dict.get(location_object.location_id, 0) 
+                                                                + sighting_object.number_of_birds)
+
+
+
+    return render_template("hummingbird.html", locationbird_dict=loc_birdcount_dict, bird_object=bird)
+
+    # Link to eBird info:
+    # https://ebird.org/species/ebird_id
 
 
 if __name__ == "__main__":

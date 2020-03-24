@@ -2,7 +2,8 @@
 from sqlalchemy import func
 from server import app
 from datetime import datetime
-from model import connect_to_db, db, BirdType, Taxon, BirdSighting, Checklist, Location
+from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
+# from model import Taxon
 import sys
 
 
@@ -80,32 +81,44 @@ def load_birdsightings():
     # Open file and return a corresponding file object. 
     # Split on tab with \t
     # Extract data from the file object's row attributes.
-    for row in open("seed_data/ebd_calhum.txt"):
-        row_list = row.split("\t")
-        if row_list[8].isdigit(): 
-            quantity = row_list[8]
-        else:
-            continue
-        checklist = row_list[30]
-        # Create new row object:
-        birdsighting = BirdSighting(ebird_id="calhum", checklist_id=checklist, number_of_birds=quantity)
-        # Add new row object to the session so it will be stored:
-        db.session.add(birdsighting)
 
-    # Open file and return a corresponding file object. 
-    # Split on tab with \t
-    # Extract data from the file object's row attributes.
-    for row in open("seed_data/ebd_allhum.txt"):
+    for i, row in enumerate(open(sighting_list)):
+        row = row.rstrip()
         row_list = row.split("\t")
+
         if row_list[8].isdigit(): 
             quantity = row_list[8]
         else:
-            continue
+            quantity = 1
         checklist = row_list[30]
-        # Create new row object:
-        birdsighting = BirdSighting(ebird_id="allhum", checklist_id=checklist, number_of_birds=quantity)
-        # Add new row object to the session so it will be stored:
-        db.session.add(birdsighting)
+        date = row_list[27]
+        year = date[0:4]
+        # print(year)
+        if int(year) > 2016:
+            if row_list[3] == 'species':
+                # 'COMMON NAME', 4:
+                common_name = row_list[4]
+                # 'SCIENTIFIC NAME', 5:
+                sci_name = row_list[5]
+                #print(sci_name)
+                sci_list = sci_name.split()
+                genus = sci_list[0]
+                species = sci_list[1]
+
+                # Dictionary ebird_match_dict format: # {genus: {species: ebird_id}, genus: {species: ebird_id, species: ebird_id}}
+                ebird_id = ebird_match_dict[genus][species]
+        
+
+                # Create new row object:
+                birdsighting = BirdSighting(ebird_id=ebird_id, checklist_id=checklist, number_of_birds=quantity)
+                # Add new row object to the session so it will be stored:
+                db.session.add(birdsighting)
+                if i % 100 == 0:
+                    print()
+                    print("row: ", i)
+                    print()
+                    # Commit all the new work: 
+                    db.session.commit()
 
     # Commit all the new work:
     db.session.commit()
@@ -126,8 +139,7 @@ def load_checklists():
     # Extract data from the file object's row attributes.
     """Load row objects into database."""
     unique_checklists = []
-    # for i, row in enumerate(open("seed_data/all_hummingbird_sightings_since_2017.txt")):
-    for i, row in enumerate(open("seed_data/first100sightings.txt")):
+    for i, row in enumerate(open(sighting_list)):
         row = row.rstrip()
         row_list = row.split("\t")
         # if len(row_list) < 43:
@@ -193,8 +205,7 @@ def load_locations():
     # Extract data from the file object's row attributes.
     """Load row objects into database."""
     previous_loc_list = []
-    for i, row in enumerate(open("seed_data/all_hummingbird_sightings_since_2017.txt")):
-    # for row in open("seed_data/first100sightings.txt"):
+    for i, row in enumerate(open(sighting_list)):
         row = row.rstrip()
         row_list = row.split("\t")
         # if len(row_list) < 43:
@@ -256,13 +267,18 @@ if __name__ == "__main__":
     db.create_all()
 
     # Load data into row objects created from classes in model.py
-    
     # load_taxa()
-    # load_locations()
+    
 
-    # load_birdtypes()
+    sighting_list = "seed_data/all_hummingbird_sightings_since_2017.txt"
+    # sighting_list = "seed_data/first100sightings.txt"
+    # sighting_list = "seed_data/last100sightings.txt"
+    
+    load_locations()
+
+    load_birdtypes()
     load_checklists()   
 
-    # ebird_match_dict = gse_dict()
+    ebird_match_dict = gse_dict()
    
-    # load_birdsightings()
+    load_birdsightings()

@@ -1,5 +1,6 @@
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func, distinct
 
 # Importing and instantiating a SQLAlchemy object. 
 # This is the connection to the PostgreSQL database; we're getting this through
@@ -37,21 +38,21 @@ class BirdType(db.Model):
 # 'sciName': 'Archilochus colubris',
 
 
-class Taxon(db.Model):
-    """Table of genuses and their clade membership. Hummingbirds fall into nine main clades,  
-    organized which define their relationships to nectar-bearing flowering plants 
-    and their continued spread into new geographic areas: 
-    Topazes, Hermits, Mangoes, Brilliants, Coquettes, Patagona, Mountain Gems, Bees, and Emeralds.
-    """
+# class Taxon(db.Model):
+#     """Table of genuses and their clade membership. Hummingbirds fall into nine main clades,  
+#     organized which define their relationships to nectar-bearing flowering plants 
+#     and their continued spread into new geographic areas: 
+#     Topazes, Hermits, Mangoes, Brilliants, Coquettes, Patagona, Mountain Gems, Bees, and Emeralds.
+#     """
     
-    __tablename__ = "taxa"
+#     __tablename__ = "taxa"
 
-    genus = db.Column(db.String(64), nullable=False, primary_key=True)
-    clade = db.Column(db.String(64), nullable=True)
+#     genus = db.Column(db.String(64), nullable=False, primary_key=True)
+#     clade = db.Column(db.String(64), nullable=True)
 
-    def __repr__(self):
-        """provide helpful representation when printed""" 
-        return f"<Taxon Object: genus is {self.genus}, clade is {self.clade}.>" 
+#     def __repr__(self):
+#         """provide helpful representation when printed""" 
+#         return f"<Taxon Object: genus is {self.genus}, clade is {self.clade}.>" 
 
 
 
@@ -62,7 +63,6 @@ class BirdSighting(db.Model):
 
     bird_sighting_id = db.Column(db.Integer, autoincrement=True, nullable=False, primary_key=True)
     ebird_id = db.Column(db.String(64), db.ForeignKey('birdtypes.ebird_id'), nullable=False)
-    # checklist_id = db.Column(db.String(64), nullable=False)
     checklist_id = db.Column(db.String(64), db.ForeignKey('checklists.checklist_id'), nullable=False)
     number_of_birds = db.Column(db.Integer, nullable=False)
 
@@ -83,8 +83,8 @@ class Checklist(db.Model):
     datetime_object = db.Column(db.DateTime, nullable=False)
     location_id = db.Column(db.String(64), db.ForeignKey('locations.location_id'), nullable=False)
 
-    # birdsightings = db.relationship("BirdSighting")
-    # location = db.relationship("Location")
+    birdsightings = db.relationship("BirdSighting")
+    location = db.relationship("Location")
 
     def __repr__(self):
         """provide helpful representation when printed""" 
@@ -101,7 +101,7 @@ class Location(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     country = db.Column(db.String(64), nullable=True)
 
-    # checklists = db.relationship("Checklist")
+    checklists = db.relationship("Checklist")
 
     def __repr__(self):
         """provide helpful representation when printed""" 

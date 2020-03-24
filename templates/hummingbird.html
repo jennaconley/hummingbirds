@@ -3,13 +3,17 @@
 {% block body %}
     <div>
 	<!-- Sighting information goes below-->
-        <p><h3>Hummingbird Sightings</h3></p>
+        <p><h3>{{ bird_object.common_name }} Sightings</h3></p>
+          <h3>{{ bird_object.genus }} {{ bird_object.species }}</h3>
          <br>
-            {% for sighting in sightings_list %}
+         <br>
+            {% for each_key in locationbird_dict.keys() %}
 
-                  <div id="sighting-div" class="row">
+                  <div id="locbird-div" class="row">
 
-	<h3>"{{ sighting.ebird_id }}: checklist {{ sighting.checklist_id }} reports {{ sighting.number_of_birds }} birds."                   
+	                     Location {{ each_key }} sightings: {{ locationbird_dict[each_key] }} 
+
+                                      
 
                   </div>
 
