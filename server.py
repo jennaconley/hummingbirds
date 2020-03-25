@@ -9,6 +9,8 @@ from jinja2 import StrictUndefined
 from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
 # from model import Taxon
 
+#from associations import loc_diversity_dict
+
 
 app = Flask(__name__)
 
@@ -22,9 +24,6 @@ app.jinja_env.auto_reload = True
 
 # If you use an undefined variable in Jinja2, this raises an error:
 app.jinja_env.undefined = StrictUndefined
-
-
-
 
 
 @app.route('/')
@@ -69,8 +68,11 @@ def show_sightings(ebird_id):
 
         list_of_dicts.append(current_dict)
 
+    clat = 9.7489
+    clong = 83.7534
 
-    return render_template("hummingbird.html", list_of_dicts=list_of_dicts, bird_object=bird)
+    return render_template("speciesmap.html", clat=clat, clong=clong, list_of_dicts=list_of_dicts, bird_object=bird)
+    # return render_template("hummingbird.html", list_of_dicts=list_of_dicts, bird_object=bird)
 
     # Link to eBird info:
     # https://ebird.org/species/ebird_id
