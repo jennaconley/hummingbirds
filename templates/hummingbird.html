@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
- 
+ list_of_dicts, bird_object
     
      
 
@@ -8,16 +8,16 @@
     <div>
 	<!-- Sighting information goes below-->
         <p><h3>{{ bird_object.common_name }} Sightings</h3></p>
-          <h3>{{ bird_object.genus }} {{ bird_object.species }}</h3>
+         <h3>{{ bird_object.genus }} {{ bird_object.species }}</h3>
          <br>
          <br>
-            {% for each_key in locationbird_dict.keys() %}
+            {% for current_dict in list_of_dicts %}
 
                   <div id="locbird-div" class="row">
 
-	                     Location {{ each_key }} sightings: {{ locationbird_dict[each_key] }}
-                                                             
-
+	                     Latitude: {{ current_dict['latitude'] }}, Longitude: {{ current_dict['longitude'] }}, Country: {{ current_dict['country'] }},
+                       {{ bird_object.common_name }} Total: {{ current_dict['this_species'] }}
+                                                                                           
                   </div>
 
             {% endfor %}

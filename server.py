@@ -58,10 +58,19 @@ def show_sightings(ebird_id):
         checklist_object = sighting_object.checklist
         location_object = checklist_object.location
         loc_birdcount_dict[location_object.location_id] = loc_birdcount_dict.get(location_object.location_id, 0) + sighting_object.number_of_birds
-   
+    
+    list_of_dicts = []
+
+    for loc_code in loc_birdcount_dict.keys():
+        location_object = Location.query.get(loc_code)
+
+        current_dict = {'latitude': location_object.latitude, 'longitude': location_object.longitude, 'country': location_object.country, 
+          'this_species': loc_birdcount_dict[loc_code]}
+
+        list_of_dicts.append(current_dict)
 
 
-    return render_template("hummingbird.html", locationbird_dict=loc_birdcount_dict, bird_object=bird)
+    return render_template("hummingbird.html", list_of_dicts=list_of_dicts, bird_object=bird)
 
     # Link to eBird info:
     # https://ebird.org/species/ebird_id

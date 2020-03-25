@@ -83,6 +83,7 @@ class Checklist(db.Model):
     datetime_object = db.Column(db.DateTime, nullable=False)
     location_id = db.Column(db.String(64), db.ForeignKey('locations.location_id'), nullable=False)
 
+
     birdsightings = db.relationship("BirdSighting")
     location = db.relationship("Location")
 
