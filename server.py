@@ -3,7 +3,7 @@
 from flask import Flask, redirect, request, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_debugtoolbar import DebugToolbarExtension
-
+import math 
 from jinja2 import StrictUndefined
 
 from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
@@ -64,13 +64,13 @@ def show_sightings(ebird_id):
         location_object = Location.query.get(loc_code)
 
         current_dict = {'latitude': location_object.latitude, 'longitude': location_object.longitude, 'country': location_object.country, 
-          'this_species': loc_birdcount_dict[loc_code]}
+          'this_species': loc_birdcount_dict[loc_code], 'circle_size': math.sqrt(loc_birdcount_dict[loc_code]) }
 
         list_of_dicts.append(current_dict)
 
-    clat = 9.7489
-    clong = 83.7534
-
+    clat = list_of_dicts[0]['latitude']
+    clong = list_of_dicts[0]['longitude']
+    
     return render_template("speciesmap.html", clat=clat, clong=clong, list_of_dicts=list_of_dicts, bird_object=bird)
     # return render_template("hummingbird.html", list_of_dicts=list_of_dicts, bird_object=bird)
 
