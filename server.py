@@ -43,63 +43,44 @@ def begin_search():
 
 @app.route('/sightings/<ebird_id>')
 def show_sightings(ebird_id):
-    """Render the template hummingbird.html"""
+    """Gather sighting information to display using speciesmap.html"""
 
     beginning = time.time()
 
     bird = BirdType.query.get(ebird_id)
-
-    # sightings = BirdSighting.query.filter_by(ebird_id=ebird_id).all()
-    sightings = BirdSighting.query.filter_by(ebird_id=ebird_id).options(db.joinedload('checklist')).all()
-    #db.joinedload('location')??
-
-    # sightings = BirdSighting.query.join(Checklist).add_columns(BirdSighting.number_of_birds, Checklist.location_id).filter_by(BirdSighting.ebird_id=ebird_id).all()
-
+    post_BirdType_time = time.time()
+    print(f"We just finished the BirdType query. It took {post_BirdType_time - beginning} seconds")
+    
+    sighting_checklist_location_list = db.session.query(BirdSighting, Checklist, Location).filter(BirdSighting.ebird_id == ebird_id).join(BirdSighting.checklist).join(Checklist.location).all()
     post_sightings_time = time.time()
-    print(f"We just finished the sightings query.  It took {post_sightings_time - beginning} seconds")
+    print(f"We just finished the BirdSighting, Checklist, Location query. It took {post_sightings_time - beginning} seconds")
 
-    # locations = Location.query.all()
-
-
+    
     loc_birdcount_dict = {}
-    for sighting_object in sightings:
-        #print(sighting_object)
+    for sighting_object, checklist_object, location_object in sighting_checklist_location_list:
         birdcount = sighting_object.number_of_birds
-
-        checklist_object = sighting_object.checklist
-        # location_object = checklist_object.location
-        # loc_birdcount_dict[location_object.location_id] = loc_birdcount_dict.get(location_object.location_id, 0) + sighting_object.number_of_birds
-        loc_id = checklist_object.location_id
+        loc_id = location_object.location_id
         loc_birdcount_dict[loc_id] = loc_birdcount_dict.get(loc_id, 0) + birdcount
-
 
     post_birdcount_time = time.time()
     print(f"We just finished the loc_birdcount_dict loop.  This last part took {post_birdcount_time - post_sightings_time} seconds")
 
 
     list_of_dicts = []
-
     for loc_code in loc_birdcount_dict.keys():
         location_object = Location.query.get(loc_code)
-
-        current_dict = {'latitude': location_object.latitude, 'longitude': location_object.longitude, 'country': location_object.country, 
-          'this_species': loc_birdcount_dict[loc_code], 'circle_size': math.sqrt(loc_birdcount_dict[loc_code]) }
-
+        current_dict = {'latitude': location_object.latitude, 'longitude': location_object.longitude, 'country': location_object.country, 'this_species': loc_birdcount_dict[loc_code], 'circle_size': math.sqrt(loc_birdcount_dict[loc_code])}
         list_of_dicts.append(current_dict)
 
     post_current_dict_time = time.time()
     print(f"We just finished the current_dict loop.  It took {post_current_dict_time - post_birdcount_time}")
 
-
     clat = list_of_dicts[0]['latitude']
     clong = list_of_dicts[0]['longitude']
-
-    print(f"That whole shebang took {post_current_dict_time - beginning} seconds")
+    
+    print(f"The whole thing took {post_current_dict_time - beginning} seconds")
 
     return render_template("speciesmap.html", clat=clat, clong=clong, list_of_dicts=list_of_dicts, bird_object=bird)
-
-    # Link to eBird info:
-    # https://ebird.org/species/ebird_id
 
 
 if __name__ == "__main__":
