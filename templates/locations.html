@@ -10,19 +10,20 @@
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
-
-
 {% endblock %}
 
 {% block body %}
+
         <div>
-            <p><h3>{{ bird_object.common_name }} ({{ bird_object.genus }} {{ bird_object.species }})</h3></p>
-        </div>  
+          <p><h3>Hummingbird Sightings</h3></p>
+        </div> 
+
         <div id="mapid">
         <script type="text/javascript">
             /* The JavaScript used for the Leaflet map below is from the Leaflet quickstart guide at https://leafletjs.com/examples/quick-start/. 
-            I used their suggested sample code for a basic map and a basic circle marker, then used a Jinja loop to insert my own data. Note: For the third arguement in .setView(), use smaller numbers to zoom out and higher numbers to zoom in. */
-            let mymap = L.map('mapid').setView([{{ clat }}, {{ clong }}], 5);
+            I used their suggested sample code for a basic map and a basic circle marker, then used a Jinja loop to insert my own data. 
+            Note: for the third arguement in .setView(), use smaller numbers to zoom out and higher numbers to zoom in. */
+            let mymap = L.map('mapid').setView([10.70, -85.45], 3);
             L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
                 attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
                 maxZoom: 18,
@@ -36,36 +37,16 @@
             Circle size coorelates with the number of hummingbirds reported at each location.*/
             let circle
             {% for current_dict in list_of_dicts %}
-                circle = L.circle( [{{ current_dict['latitude'] }}, {{ current_dict['longitude'] }}], {
+                circle = L.circle([{{ current_dict['latitude'] }}, {{ current_dict['longitude'] }}], {
                     color: 'purple',
                     fillColor: '#f03',
-                    fillOpacity: 0.5,
-                    radius: {{ 200 * current_dict['circle_size'] }}
+                    fillOpacity: 0.3,
+                    radius: 100
                 }).addTo(mymap);
             {% endfor %}
+          
+
         </script>  
         </div>
-        
-  <h2>View recent sightings nearby:</h2>
 
-  <form id="nearby-form">
-        <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input class="form-control" type="text" name="latitude" id="latitude-field">
-            
-            <label for="longitude">Longitude</label>
-            <input class="form-control" type="text" name="longitude" id="longitude-field">
-            
-            <input type="submit" id={{ bird_object.ebird_id }} class="location-submit">
-        </div>
-  </form>
-
-
-<script src="http://code.jquery.com/jquery-3.4.1.js"
-integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
-crossorigin="anonymous"></script>
-
-<!-- Project-specific JavaScript file. Must load jquery script first.-->
-<script src="/static/nearby.js"></script>
-
-{% endblock %}        
+{% endblock %}

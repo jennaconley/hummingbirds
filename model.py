@@ -124,7 +124,10 @@ def connect_to_db(app):
 
     # Configure to use our database.
     app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///hummingbirds"
-    app.config["SQLALCHEMY_ECHO"] = True
+
+    # This causes a lot of queries to print in the terminal:
+    # app.config["SQLALCHEMY_ECHO"] = True
+    
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
