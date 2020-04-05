@@ -58,7 +58,7 @@ def map_locations():
 
     
     # Simple Option 1/1
-    # location_list = Location.query.limit(10000)
+    location_list = Location.query.limit(10000)
 
     # Too much for my computer - don't use
     # locations = Location.query.all()

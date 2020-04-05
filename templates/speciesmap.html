@@ -6,19 +6,27 @@
     integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
     crossorigin=""/>
 
-    <!-- Leaflet JavaScript file. Should be after Leaflet's CSS Stylesheet but import script before any code that depends on it -->
+    <!-- Leaflet JavaScript file. Should be after Leaflet's CSS Stylesheet but import this script before any code that depends on it -->
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
 
-
 {% endblock %}
 
 {% block body %}
-        <div>
+
+    <!-- Class "container-fluid" to span whole page, class "container" for responsive fixed-width page. -->
+    <div class="container">
+        <br>
+
+        <div class="row">
             <p><h3>{{ bird_object.common_name }} ({{ bird_object.genus }} {{ bird_object.species }})</h3></p>
-        </div>  
-        <div id="mapid">
+        </div>
+
+
+        <div class="row">
+        
+        <div id="mapid" class="col-12 col-md-12 col-lg-9">
         <script type="text/javascript">
             /* The JavaScript used for the Leaflet map below is from the Leaflet quickstart guide at https://leafletjs.com/examples/quick-start/. 
             I used their suggested sample code for a basic map and a basic circle marker, then used a Jinja loop to insert my own data. Note: For the third arguement in .setView(), use smaller numbers to zoom out and higher numbers to zoom in. */
@@ -44,28 +52,39 @@
                 }).addTo(mymap);
             {% endfor %}
         </script>  
-        </div>
-        
-  <h2>View recent sightings nearby:</h2>
+    </div> <!-- mapid, col-9-->
 
-  <form id="nearby-form">
-        <div class="form-group">
-            <label for="latitude">Latitude</label>
-            <input class="form-control" type="text" name="latitude" id="latitude-field">
-            
-            <label for="longitude">Longitude</label>
-            <input class="form-control" type="text" name="longitude" id="longitude-field">
-            
-            <input type="submit" id={{ bird_object.ebird_id }} class="location-submit">
-        </div>
-  </form>
+    <div class="col-12 col-md-12 col-lg-3">
+        <h2>View recent sightings near:</h2>
+        <form id="nearby-form">
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input class="form-control" type="text" name="latitude" id="latitude-field">
+                
+                <label for="longitude">Longitude</label>
+                <input class="form-control" type="text" name="longitude" id="longitude-field">
+                
+                <input type="submit" id={{ bird_object.ebird_id }} class="location-submit">
+            </div>
+        </form>
+    </div> <!-- col 3 -->
+
+    </div> <!-- row -->
+
+</div> <!-- container -->
 
 
+<!-- jQuery script. Load before project-specific and bootstrap scripts. 
+Would want this in head if there were jquery code in the html page-->
 <script src="http://code.jquery.com/jquery-3.4.1.js"
 integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
 crossorigin="anonymous"></script>
 
-<!-- Project-specific JavaScript file. Must load jquery script first.-->
+<!-- Bootstrap-related scripts, load before project-specific scripts.-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- Project-specific JavaScript file. Load other scripts first.-->
 <script src="/static/nearby.js"></script>
 
 {% endblock %}        
