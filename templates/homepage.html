@@ -1,24 +1,49 @@
 {% extends 'base.html' %}
-
-
 {% block head %} 
 
 {% endblock %}
-
 {% block body %}
-    <div>
+   
 
-    <!-- List of hummingbird links-->
-    <p><h3>View Hummingbird Sightings</h3></p>
-         <br>
+    <div class="container-fluid">
 
-            {% for hum in humlist %}
-                  <div class="hum-div">
-	      <a href="/sightings/{{ hum.ebird_id }}">{{ hum.common_name }}</a>
-                  </div>
-            {% endfor %}
+      <div class="row flex-xl-nowrap">
 
+        <div class="col-12 col-md-3 col-xl-2 bd-sidebar sidebar">
+              <br>
+                            
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                View Sightings by Species
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for hum in humlist %}
+                <a class="dropdown-item" href="sightings/{{ hum.ebird_id }}">{{ hum.common_name }}</a></a>
+                {% endfor %}
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </div>
+
+    </div> <!-- column 1 -->
+
+    <!--column space-->
+    <div class="col-0 col-md-1 col-xl-1">
     </div>
+
+    <!--column 2-->
+    <div class="col-12 col-md-8 col-xl-9">
+          <!-- License is CC0, url is: https://search.creativecommons.org/photos/5e1122d3-3c41-4e42-afa2-e4b740eca646 -->
+          <img src="static/img/realisticRecropped.jpg" class="img-fluid center-block" alt="Image of hummingbird">
+    </div> <!--column 2-->
+  
+
+  </div> <!-- row -->
+
+ </div> <!--container -->
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
     <!-- Bootstrap-related scripts, load before project-specific scripts.-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

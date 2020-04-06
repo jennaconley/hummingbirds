@@ -12,6 +12,31 @@
 }
 
 
+.dropdown {
+  position: relative;
+}
+
+/*.sidebar {
+  position: fixed;
+  top: 0;
+  padding-top:70px;
+  bottom: 0;
+  left: 0;
+  display: block;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /*color: white;*/
+}*/
+
+/* Style page content */
+
+/*.main {
+  margin-left: 200px;  Same as the width of the sidebar 
+  padding: 0px 10px;
+}*/
+
+
+
  /*
 img {
   height: 200px;
