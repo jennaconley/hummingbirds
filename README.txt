@@ -1,14 +1,10 @@
-Hummingbird Trip Planner:
-A website that allows people to plan trips to see hummingbirds by searching for reported sightings of one or more species of
-hummingbirds using eBird data (species, date reported, location of report). 
+Hummingbird Quest:
 
-A user can search for hummingbirds by species, and the returned data is displayed on a map using Leaflet and Open Street Maps.
+A website that uses eBird report data to create maps that show where hummingbirds have been spotted and highlight areas of greater report density.  Users who want to plan trips to see hummingbirds can use the site to efficiently locate the best places to view a species. Those who don't want to travel can explore the reported range of a species in an easy visual format.
 
-Minimum Viable Project:
-A website that displays a list of hummingbird sightings, including species, date/time, and location.
+Data Model: https://photos.app.goo.gl/xkkcmeyAfYvHySj77
 
 
-Data Model: https://photos.app.goo.gl/MvhSCRe3KNK2C31R8
 
 
 
