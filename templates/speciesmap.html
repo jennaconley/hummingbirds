@@ -15,7 +15,7 @@
 
 {% block body %}
 
-    <!-- Class "container-fluid" to span whole page, class "container" for responsive fixed-width page. -->
+    <!-- Class "container" for responsive fixed-width page. Class "container-fluid" would span the whole page. -->
     <div class="container">
         <br>
 
@@ -52,11 +52,12 @@
                 }).addTo(mymap);
             {% endfor %}
         </script>  
-    </div> <!-- mapid, col-9-->
+        </div> <!-- mapid, col-9-->
 
-    <div class="col-12 col-md-12 col-lg-3">
-        <h2>View recent sightings near:</h2>
-        <form id="nearby-form">
+        <div class="col-12 col-md-12 col-lg-3">
+
+            <h2>View recent sightings near:</h2>       
+            <form id="nearby-form">
             <div class="form-group">
                 <label for="latitude">Latitude</label>
                 <input class="form-control" type="text" name="latitude" id="latitude-field">
@@ -66,12 +67,11 @@
                 
                 <input type="submit" id={{ bird_object.ebird_id }} class="location-submit">
             </div>
-        </form>
-    </div> <!-- col 3 -->
-
-    </div> <!-- row -->
-
-</div> <!-- container -->
+            </form>
+            
+        </div> <!-- col 3 -->
+        </div> <!-- row -->
+    </div> <!-- container -->
 
 
 <!-- jQuery script. Load before project-specific and bootstrap scripts. 
