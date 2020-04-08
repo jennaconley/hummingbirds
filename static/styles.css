@@ -1,20 +1,25 @@
 
-.navbar {
-  background-color: #b4c157;
-  color: white;
-  border-radius: 0px;
-} 
+/*#maptitle {
+  text-align:center;
+}*/
 
 
 #mapid { 
-  height: 500px; 
-  width: 800px;
+  height:500px; 
+  width:800px;
 }
 
 
 .dropdown {
   position: relative;
 }
+
+/*
+.navbar {
+  background-color: #b4c157;
+  color: white;
+  border-radius: 0px;
+} */
 
 /*.sidebar {
   position: fixed;
@@ -25,7 +30,7 @@
   display: block;
   overflow-x: hidden;
   overflow-y: auto;
-  /*color: white;*/
+  /*color: white;
 }*/
 
 /* Style page content */
@@ -37,13 +42,10 @@
 
 
 
- /*
-img {
-  height: 200px;
-  width: 200px;
-}
+ 
 
-.center {
+
+/*.center {
   display: block;
   margin-left: auto;
   margin-right: auto;

@@ -19,7 +19,8 @@
 
       <div class="row flex-xl-nowrap">
 
-        <div class="col-12 col-md-3 col-xl-2 bd-sidebar sidebar">
+        <!--column 2-->
+        <div class="col-12 col-md-5 col-xl-4 bd-sidebar sidebar">
               <br>
                             
             <div class="dropdown">
@@ -33,29 +34,29 @@
                 <a class="dropdown-item" href="#">Another action</a>
                 <a class="dropdown-item" href="#">Something else here</a>
               </div>
-            </div>
+            </div>    
 
-    </div> <!-- column 1 -->
 
-    <!--column space-->
-    <div class="col-0 col-md-1 col-xl-1">
-    </div>
+              <br>
+              <br>
+              <br>
+              <!-- <span class="border"> -->
+              <!-- License is CC0, url is: https://search.creativecommons.org/photos/5e1122d3-3c41-4e42-afa2-e4b740eca646 -->
+              <!-- <a href="https://search.creativecommons.org/photos/5e1122d3-3c41-4e42-afa2-e4b740eca646"> -->
+              <img src="static/img/realisticRecropped.jpg" class="img-fluid" alt="Image of hummingbird" id="hummingbird">
+              <!-- </span> -->
+              <!-- </a> -->
+              <!-- <br> -->
+              <!-- <br> -->
+        </div> <!-- column 1 -->
+
 
     <!--column 2-->
-    <div class="col-12 col-md-8 col-xl-9">
-          <!-- License is CC0, url is: https://search.creativecommons.org/photos/5e1122d3-3c41-4e42-afa2-e4b740eca646 -->
-          <!-- <a href="https://search.creativecommons.org/photos/5e1122d3-3c41-4e42-afa2-e4b740eca646"> -->
-          <img src="static/img/realisticRecropped.jpg" class="img-fluid center-block" alt="Image of hummingbird">
-          <!-- </a> -->
-          <br>
-          <br>
+    <div class="col-12 col-md-7 col-xl-8 mx-auto">
+       
+        <p><h3 id="maptitle" class="text-center">Where are the hummingbirds this month?</h3></p>
 
-
-          <div>
-          <p><h3>Where are the hummingbirds this month?</h3></p>
-          </div> 
-
-        <div id="mapid">
+        <div id="mapid" class="img-fluid mx-auto">
         <script type="text/javascript">
             /* The JavaScript used for the Leaflet map below is from the Leaflet quickstart guide at https://leafletjs.com/examples/quick-start/. 
             I used their suggested sample code for a basic map and a basic circle marker, then used a Jinja loop to insert my own data. 
@@ -76,9 +77,10 @@
             {% for current_dict in list_of_dicts %}
                 circle = L.circle([{{ current_dict['latitude'] }}, {{ current_dict['longitude'] }}], {
                     color: 'purple',
-                    fillColor: '#f03',
-                    fillOpacity: 0.3,
-                    radius: 100
+                    stroke: false,
+                    fillColor: 'purple',
+                    fillOpacity: 0.1,
+                    radius: 2000
                 }).addTo(mymap);
             {% endfor %}
           
@@ -93,7 +95,7 @@
  </div> <!--container -->
 
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
     <!-- Bootstrap-related scripts, load before project-specific scripts.-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
