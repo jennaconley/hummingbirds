@@ -263,22 +263,22 @@ def load_locations():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # In case tables haven't been created, execute the method on the database connection that creates the tables:
-    db.create_all()
+    # # In case tables haven't been created, execute the method on the database connection that creates the tables:
+    # db.create_all()
 
-    # Load data into row objects created from classes in model.py
-    # load_taxa()
+    # # Load data into row objects created from classes in model.py
+    # # load_taxa()
     
 
-    sighting_list = "seed_data/all_hummingbird_sightings_since_2017.txt"
-    # sighting_list = "seed_data/first100sightings.txt"
-    # sighting_list = "seed_data/last100sightings.txt"
+    # sighting_list = "seed_data/all_hummingbird_sightings_since_2017.txt"
+    # # sighting_list = "seed_data/first100sightings.txt"
+    # # sighting_list = "seed_data/last100sightings.txt"
     
-    load_locations()
+    # load_locations()
 
-    load_birdtypes()
-    load_checklists()   
+    # load_birdtypes()
+    # load_checklists()   
 
-    ebird_match_dict = gse_dict()
+    # ebird_match_dict = gse_dict()
    
-    load_birdsightings()
+    # load_birdsightings()

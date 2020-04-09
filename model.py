@@ -4,10 +4,9 @@ from sqlalchemy import func, distinct
 
 # Importing and instantiating a SQLAlchemy object. 
 # This is the connection to the PostgreSQL database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
+# the Flask-SQLAlchemy helper library. Attributes include the `session`
 # object, where we do most of our interactions (like committing, etc.), and the
 # db.Model super-class that our database table classes will inherit from.
-
 db = SQLAlchemy()
 
 
@@ -33,23 +32,19 @@ class BirdType(db.Model):
         return f"<BirdType Object: ebird_id is {self.ebird_id}.>" 
 
 
-# 'speciesCode': 'rthhum'
-# 'comName': 'Ruby-throated Hummingbird',
-# 'sciName': 'Archilochus colubris',
-
-
+# This class is not being used in the current version of this database, but I 
+# may do something with clades in the future. 
 # class Taxon(db.Model):
-#     """Table of genuses and their clade membership. Hummingbirds fall into nine main clades,  
-#     organized which define their relationships to nectar-bearing flowering plants 
-#     and their continued spread into new geographic areas: 
+#     """Table of genuses and their clade membership. 'Hummingbirds fall into nine main clades,  
+#     organized around their relationships to nectar-bearing flowering plants 
+#     and their continued spread into new geographic areas.'
 #     Topazes, Hermits, Mangoes, Brilliants, Coquettes, Patagona, Mountain Gems, Bees, and Emeralds.
 #     """
-    
 #     __tablename__ = "taxa"
-
+#
 #     genus = db.Column(db.String(64), nullable=False, primary_key=True)
 #     clade = db.Column(db.String(64), nullable=True)
-
+#
 #     def __repr__(self):
 #         """provide helpful representation when printed""" 
 #         return f"<Taxon Object: genus is {self.genus}, clade is {self.clade}.>" 
@@ -110,14 +105,8 @@ class Location(db.Model):
 
 
 
-# 'subId': 'S65407994'
-# 'obsDt': '2020-03-03 17:07'
-# 'lat': 33.8334575, 
-# 'lng': -84.2980854,
-
-
 ##############################################################################
-# Helper functions
+# Helper function which will be called by server.py.
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
@@ -129,6 +118,7 @@ def connect_to_db(app):
     # app.config["SQLALCHEMY_ECHO"] = True
     
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
     db.app = app
     db.init_app(app)
 
