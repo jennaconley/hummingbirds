@@ -28,9 +28,9 @@
                 View Sightings by Species
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {% for hum in humlist %}
-                <a class="dropdown-item" href="sightings/{{ hum.ebird_id }}">{{ hum.common_name }}</a></a>
-                {% endfor %}
+                 {% for hum in humlist %}
+                    <a class="dropdown-item" href="{{ url_for('show_sightings', ebird_id = hum.ebird_id)}} ">{{ hum.common_name }}</a>
+                 {% endfor %}
               </div>
             </div>    
 
