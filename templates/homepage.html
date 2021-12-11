@@ -71,17 +71,19 @@
 
             /* Looping through my location coordinates using Jinja to insert them into the Leaflet sample code for a basic circle marker. 
             Circle size coorelates with the number of hummingbirds reported at each location.*/
-            let circle
             {% for latitude, longitude in lat_long_tuples_set %}
-                circle = L.circle([{{ latitude }}, {{ longitude }}], {
-                    color: 'purple',
-                    stroke: false,
-                    fillColor: 'purple',
-                    fillOpacity: 0.2,
-                    radius: 20000
-                }).addTo(mymap);
+                L.circle(
+                    [{{ latitude }}, {{ longitude }}], 
+                    {
+                      color: 'purple',
+                      stroke: false,
+                      fillColor: 'purple',
+                      fillOpacity: 0.2,
+                      radius: 20000,
+                    }
+                ).addTo(mymap);
             {% endfor %}
-          
+
         </script>  
         </div> <!-- map div-->
 

@@ -42,14 +42,16 @@
 
             /* Looping through my location coordinates using Jinja to insert them into the Leaflet sample code for a basic circle marker. 
             Circle size coorelates with the number of hummingbirds reported at each location.*/
-            let circle
             {% for current_dict in list_of_dicts %}
-                circle = L.circle( [{{ current_dict['latitude'] }}, {{ current_dict['longitude'] }}], {
-                    color: 'purple',
-                    fillColor: '#f03',
-                    fillOpacity: 0.5,
-                    radius: {{ 200 * current_dict['circle_size'] }}
-                }).addTo(mymap);
+                L.circle( 
+                    [{{ current_dict['latitude'] }}, {{ current_dict['longitude'] }}], 
+                    {
+                      color: 'purple',
+                      fillColor: '#f03',
+                      fillOpacity: 0.5,
+                      radius: {{ 200 * current_dict['circle_size'] }},
+                    }
+                ).addTo(mymap);
             {% endfor %}
         </script>  
         </div> <!-- mapid, col-9-->

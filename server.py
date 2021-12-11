@@ -15,9 +15,9 @@ import os
 from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
 
 
-EBIRD_API_KEY = os.environ["EBIRD_API_KEY"]
-OSM_ACCESS_TOKEN = os.environ["OSM_ACCESS_TOKEN"]
-FLASK_SECRET_KEY = os.environ["FLASK_SECRET_KEY"]
+EBIRD_API_KEY = os.environ.get("EBIRD_API_KEY")
+OSM_ACCESS_TOKEN = os.environ.get("OSM_ACCESS_TOKEN")
+FLASK_SECRET_KEY = os.environ.get("FLASK_SECRET_KEY")
 
 app = Flask(__name__)
 
@@ -189,4 +189,8 @@ if __name__ == "__main__":
     # DebugToolbarExtension(app)
 
     # Site can be found at http://localhost:5000
-    app.run(port=5000, host='0.0.0.0')
+    app.run(
+        port=5000,
+        # host='0.0.0.0'
+        host='127.0.0.1'
+    )
