@@ -112,7 +112,8 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our database.
-    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///hummingbirds"
+    # app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///hummingbirds"
+    app.config["SQLALCHEMY_DATABASE_URI"] = "postgres:///humbase"
 
     # This causes a lot of queries to print in the terminal:
     # app.config["SQLALCHEMY_ECHO"] = True
