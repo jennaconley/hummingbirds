@@ -1,10 +1,7 @@
 """File to seed database"""
-from sqlalchemy import func
 from server import app
 from datetime import datetime
 from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
-# from model import Taxon
-import sys
 
 
 def load_birdtypes():
@@ -16,14 +13,14 @@ def load_birdtypes():
     # we won't be trying to add duplicate users
     BirdType.query.delete()
 
-    # Open file and return a corresponding file object. 
+    # Open file and return a corresponding file object.
     # Extract data from the file object's row attributes.
     for row in open("seed_data/HummingbirdSpecies.txt"):
         row_list = row.split(",")
-        #print(row_list)
+        # print(row_list)
         if "Trochilidae" in row_list[10]:
             sci_name = row_list[0]
-            #print(sci_name)
+            # print(sci_name)
             sci_list = sci_name.split()
             genus = sci_list[0]
             species = sci_list[1]
@@ -31,10 +28,16 @@ def load_birdtypes():
             common_name = row_list[1]
             ebird_id = row_list[2]
             range_notes = "none"
-            # print(ebird_id, genus, species, common_name, range_notes)    
+            # print(ebird_id, genus, species, common_name, range_notes)
 
             # Create new row object:
-            birdtype = BirdType(ebird_id=ebird_id, genus=genus, species=species, common_name=common_name, range_notes=range_notes)
+            birdtype = BirdType(
+                ebird_id=ebird_id,
+                genus=genus,
+                species=species,
+                common_name=common_name,
+                range_notes=range_notes,
+            )
             # Add new row object to the session so it will be stored:
             db.session.add(birdtype)
 
@@ -42,9 +45,8 @@ def load_birdtypes():
     db.session.commit()
 
 
-
-def gse_dict():
-    """Create a quick ebird_id reference to reduce demand on database while seeding: 
+def create_genus_species_id_dict():
+    """Create a quick ebird_id reference to reduce demand on database while seeding:
     {genus: {species: ebird_id}, genus: {species: ebird_id, species: ebird_id}}
     """
     hum_dict = {}
@@ -55,18 +57,7 @@ def gse_dict():
         else:
             hum_dict[hum.genus] = {hum.species: hum.ebird_id}
 
-    return hum_dict    
-
-
-
-# def load_taxa():
-    """Load row objects into database."""
-    # genus = ""
-
-   # clade = 'TBD'
-
-    # Taxon(genus=genus, clade='TBD')
-
+    return hum_dict
 
 
 def load_birdsightings():
@@ -78,7 +69,7 @@ def load_birdsightings():
     # we won't be trying to add duplicate users
     BirdSighting.query.delete()
 
-    # Open file and return a corresponding file object. 
+    # Open file and return a corresponding file object.
     # Split on tab with \t
     # Extract data from the file object's row attributes.
 
@@ -86,7 +77,7 @@ def load_birdsightings():
         row = row.rstrip()
         row_list = row.split("\t")
 
-        if row_list[8].isdigit(): 
+        if row_list[8].isdigit():
             quantity = row_list[8]
         else:
             quantity = 1
@@ -95,34 +86,35 @@ def load_birdsightings():
         year = date[0:4]
         # print(year)
         if int(year) > 2016:
-            if row_list[3] == 'species':
+            if row_list[3] == "species":
                 # 'COMMON NAME', 4:
                 common_name = row_list[4]
                 # 'SCIENTIFIC NAME', 5:
                 sci_name = row_list[5]
-                #print(sci_name)
+                # print(sci_name)
                 sci_list = sci_name.split()
                 genus = sci_list[0]
                 species = sci_list[1]
 
-                # Dictionary ebird_match_dict format: # {genus: {species: ebird_id}, genus: {species: ebird_id, species: ebird_id}}
+                # Dictionary ebird_match_dict format: 
+                # {genus: {species: ebird_id}, genus: {species: ebird_id, species: ebird_id}}
                 ebird_id = ebird_match_dict[genus][species]
-        
 
                 # Create new row object:
-                birdsighting = BirdSighting(ebird_id=ebird_id, checklist_id=checklist, number_of_birds=quantity)
+                birdsighting = BirdSighting(
+                    ebird_id=ebird_id, checklist_id=checklist, number_of_birds=quantity
+                )
                 # Add new row object to the session so it will be stored:
                 db.session.add(birdsighting)
                 if i % 100 == 0:
                     print()
                     print("row: ", i)
                     print()
-                    # Commit all the new work: 
+                    # Commit all the new work:
                     db.session.commit()
 
     # Commit all the new work:
     db.session.commit()
-
 
 
 def load_checklists():
@@ -134,7 +126,7 @@ def load_checklists():
     # we won't be trying to add duplicate users
     Checklist.query.delete()
 
-    # Open file and return a corresponding file object. 
+    # Open file and return a corresponding file object.
     # Split on tab with \t
     # Extract data from the file object's row attributes.
     """Load row objects into database."""
@@ -152,7 +144,7 @@ def load_checklists():
         year = date[0:4]
         # print(year)
         if int(year) > 2016:
-            if row_list[3] == 'species':
+            if row_list[3] == "species":
                 location = row_list[23]
                 checklist = row_list[30]
 
@@ -161,13 +153,18 @@ def load_checklists():
                 if len(time) < 5:
                     time = "00:00:00"
                 datetime_string = date + " " + time
-                datetime_object = datetime.strptime(datetime_string, "%Y-%m-%d %H:%M:%S")
+                datetime_object = datetime.strptime(
+                    datetime_string, "%Y-%m-%d %H:%M:%S"
+                )
 
-                
                 # print("checklist_id= ", checklist, "location_id= ", location, "datetime_object= ", datetime_object.timetuple())
                 # sys.exit()
                 # break
-                checklist_object = Checklist(location_id=location, checklist_id=checklist, datetime_object=datetime_object)
+                checklist_object = Checklist(
+                    location_id=location,
+                    checklist_id=checklist,
+                    datetime_object=datetime_object,
+                )
 
                 # Add new row object to the session so it will be stored:
                 db.session.add(checklist_object)
@@ -177,18 +174,15 @@ def load_checklists():
                 if i % 100 == 0:
                     print("row: ", i)
                     print("Unique Checklists: ", len(unique_checklists))
-                    # Commit all the new work: 
+                    # Commit all the new work:
                     db.session.commit()
             # else:
             #     print()
             #     print("Not Species: ", row_list[3])
             #     print()
-    # sys.exit()                
+    # sys.exit()
     # Commit all the new work:
     db.session.commit()
-
-
-
 
 
 def load_locations():
@@ -200,7 +194,7 @@ def load_locations():
     # we won't be trying to add duplicate users
     Location.query.delete()
 
-    # Open file and return a corresponding file object. 
+    # Open file and return a corresponding file object.
     # Split on tab with \t
     # Extract data from the file object's row attributes.
     """Load row objects into database."""
@@ -218,16 +212,21 @@ def load_locations():
         year = date[0:4]
         # print(year)
         if int(year) > 2016:
-            if row_list[3] == 'species':
+            if row_list[3] == "species":
                 location = row_list[23]
-                latitude =  row_list[25]
+                latitude = row_list[25]
                 longitude = row_list[26]
                 country = row_list[12]
                 previous_loc_list.append(location)
                 # sys.exit()
                 # print("We didn't exit :-(")
                 # break
-                location_object = Location(location_id=location, latitude=latitude, longitude=longitude, country=country)
+                location_object = Location(
+                    location_id=location,
+                    latitude=latitude,
+                    longitude=longitude,
+                    country=country,
+                )
                 # Add new row object to the session so it will be stored:
                 db.session.add(location_object)
                 # db.session.commit()
@@ -235,14 +234,14 @@ def load_locations():
                 if i % 100 == 0:
                     print("row: ", i)
                     print("Unique Locations: ", len(previous_loc_list))
-                    # Commit all the new work: 
+                    # Commit all the new work:
                     db.session.commit()
-                    
+
     # Commit all the new work:
     db.session.commit()
 
 
-# 'TAXONOMIC ORDER', 2            
+# 'TAXONOMIC ORDER', 2
 # 'CATEGORY',     3 #species
 # 'COMMON NAME', 4
 # 'SCIENTIFIC NAME', 5
@@ -258,27 +257,21 @@ def load_locations():
 # 'GROUP IDENTIFIER', 39
 
 
-
-
 if __name__ == "__main__":
     connect_to_db(app)
 
     # # In case tables haven't been created, execute the method on the database connection that creates the tables:
-    # db.create_all()
+    db.create_all()
 
     # # Load data into row objects created from classes in model.py
-    # # load_taxa()
-    
+    sighting_list = "seed_data/all_hummingbird_sightings_since_2017.txt"
 
-    # sighting_list = "seed_data/all_hummingbird_sightings_since_2017.txt"
-    # # sighting_list = "seed_data/first100sightings.txt"
-    # # sighting_list = "seed_data/last100sightings.txt"
-    
-    # load_locations()
+    load_locations()
 
-    # load_birdtypes()
-    # load_checklists()   
+    load_birdtypes()
 
-    # ebird_match_dict = gse_dict()
-   
-    # load_birdsightings()
+    load_checklists()
+
+    ebird_match_dict = create_genus_species_id_dict()
+
+    load_birdsightings()
