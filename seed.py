@@ -2,6 +2,7 @@
 from server import app
 from datetime import datetime
 from model import connect_to_db, db, BirdType, BirdSighting, Checklist, Location
+import sys
 
 
 def load_birdtypes():
@@ -257,8 +258,18 @@ def load_locations():
 # 'GROUP IDENTIFIER', 39
 
 
+def test_database_connection():
+    bird_list = BirdType.query.all()
+    for number, bird in enumerate(bird_list):
+        print(f"{number}. {bird.common_name} ({bird.genus} {bird.species})")
+    sys.exit("Breakpoint!!")
+
+
 if __name__ == "__main__":
-    connect_to_db(app)
+    app = connect_to_db(app)
+    app.app_context().push()
+    # connect_to_db(app)
+    test_database_connection()
 
     # # In case tables haven't been created, execute the method on the database connection that creates the tables:
     db.create_all()

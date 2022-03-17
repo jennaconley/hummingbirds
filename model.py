@@ -8,7 +8,9 @@ db = SQLAlchemy()
 
 
 class BirdType(db.Model):
-    """Type of bird."""
+    """
+    Types of hummingbird
+    """
 
     __tablename__ = "birdtypes"
 
@@ -45,7 +47,9 @@ class BirdType(db.Model):
 
 
 class BirdSighting(db.Model):
-    """Sighting of Bird"""
+    """
+    Sightings of hummingbirds
+    """
 
     __tablename__ = "birdsightings"
 
@@ -69,7 +73,9 @@ class BirdSighting(db.Model):
 
 
 class Checklist(db.Model):
-    """Birding checklist."""
+    """
+    Birding checklists that include hummingbird sightings
+    """
 
     __tablename__ = "checklists"
 
@@ -88,7 +94,9 @@ class Checklist(db.Model):
 
 
 class Location(db.Model):
-    """Birding location."""
+    """
+    Locations of reported hummingbird sightings
+    """
 
     __tablename__ = "locations"
 
@@ -122,6 +130,7 @@ def connect_to_db(app):
 
     db.app = app
     db.init_app(app)
+    return(app)
 
 
 if __name__ == "__main__":

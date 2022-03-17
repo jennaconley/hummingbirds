@@ -234,7 +234,8 @@ if __name__ == "__main__":
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
-    connect_to_db(app)
+    app = connect_to_db(app)
+    app.app_context().push()
 
     app.config["CACHE_TYPE"] = "simple"  # Flask-Caching related config
     app.config["CACHE_DEFAULT_TIMEOUT"] = 300  # Flask-Caching related config
